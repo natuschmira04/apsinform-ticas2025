@@ -171,7 +171,9 @@ def pagarFacturas(usuario):
     print("\nPagando Facturas...")
 # LAS FACTURAS SOLO SE PAGAN SI TIENES SALDO SUFICIENTE
 # SI LAS FACTURAS SE PAGAN, SE BORRAN DEL DICCIONARIO
-
+consultarFacturas (usuario)
+factAPagar = int(input("Decime que factura queres abonar: (SOLO NUMERO) "))
+if usuario [
 # FUNCIÓN PARA CONSULTAR SUCURSALES
 def consultarSucursales():
     print("\nAccediendo a datos de sucursales...")
@@ -193,6 +195,11 @@ def consultarSucursales():
     #Printeo sucursales de Sur
     sucursal = sucursales['Sur']
     print("Las sucursales en SUR son: ")
+    #Printeo sucursales de Norte
+    for local in sucursal:
+        print(f'La sucursal de {local}')
+    sucursal = sucursales['Norte']
+    print("Las sucursales en NORTE son: ")
     for local in sucursal:
         print(f'La sucursal de {local}')
 
