@@ -147,7 +147,7 @@ def buscarUsuarioPorDni(nroBuscado):
             return usuario
         else:
             print("\nNo se encontró un usuario con ese DNI.")
-            return None
+
             
 
     
@@ -171,9 +171,9 @@ def pagarFacturas(usuario):
     print("\nPagando Facturas...")
 # LAS FACTURAS SOLO SE PAGAN SI TIENES SALDO SUFICIENTE
 # SI LAS FACTURAS SE PAGAN, SE BORRAN DEL DICCIONARIO
-consultarFacturas (usuario)
-factAPagar = int(input("Decime que factura queres abonar: (SOLO NUMERO) "))
-if usuario [
+    consultarFacturas(usuario)
+    factAPagar = int(input("Decime que factura queres abonar: (SOLO NUMERO) "))
+    if usuario['facturasAdeudadas'][factAPagar-1] 
 # FUNCIÓN PARA CONSULTAR SUCURSALES
 def consultarSucursales():
     print("\nAccediendo a datos de sucursales...")
@@ -187,19 +187,14 @@ def consultarSucursales():
     print("Las sucursales en OESTE son: ")
     for local in sucursal:
         print(f'La sucursal de {local}')
-    #Printeo sucursales de Este
-    sucursal = sucursales['Este']
-    print("Las sucursales en ESTE son: ")
-    for local in sucursal:
-        print(f'La sucursal de {local}')
     #Printeo sucursales de Sur
     sucursal = sucursales['Sur']
     print("Las sucursales en SUR son: ")
-    #Printeo sucursales de Norte
     for local in sucursal:
         print(f'La sucursal de {local}')
+    #Printeo sucursales en Norte
     sucursal = sucursales['Norte']
-    print("Las sucursales en NORTE son: ")
+    print("Las sucursales en Norte son: ")
     for local in sucursal:
         print(f'La sucursal de {local}')
 
@@ -219,10 +214,10 @@ dniIngresado = int(input("Por favor, ingrese su DNI (sin puntos): "))
 # BUSCAR USUARIO SEGÚN SU DNI Y ALMACENARLO EN UNA VARIABLE LLAMADA "usuarioActual"
 usuarioActual = buscarUsuarioPorDni(dniIngresado)
 # SALUDAR AL "usuarioActual" SEGÚN SU NOMBRE
-if usuarioActual == None:
-    continuar = "NO"
-else:
+if usuarioActual != None:
     continuar = "SI"
+else:
+    continuar = "NO"
 # BUCLE DEL CHATBOT - PERMITIR ELEGIR OPCIONES HASTA QUE DESEE TERMINAR
 
 while continuar == "SI":
