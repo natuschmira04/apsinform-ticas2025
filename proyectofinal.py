@@ -129,6 +129,12 @@ sucursales = {"Oeste": ["Merlo", "Castelar", "Ramos Mejía"],
 "Caba": ["Belgrano", "Palermo", "Recoleta"],
 }
 
+# DATOS HORARIOS
+horarios = {"Lunes": ["10:00", "11:00", "15:00", "16:00"],
+"Martes": ["10:00", "11:00", "15:00", "16:00"],
+"Miércoles": ["10:00", "11:00", "15:00", "16:00"],
+"Jueves": ["10:00", "11:00", "15:00", "16:00"], }
+
 
 # --- FUNCIONES DEL CHATBOT ---
 
@@ -136,30 +142,70 @@ sucursales = {"Oeste": ["Merlo", "Castelar", "Ramos Mejía"],
 def buscarUsuarioPorDni(nroBuscado):
     print("\nBuscando usuario...")
     for usuario in usuarios:
-        if usuario ["Dni"] == nroBuscado:
-            print(f"\n¡!Hola {usuario["Nombre"]}! ¿En qué puedo ayudarte hoy?")
+        if usuario["Dni"] == nroBuscado:
+            print(f"\n¡Hola {usuario['Nombre']}! ¿En qué puedo ayudarte hoy?")
             return usuario
-    print("\nNo se encontró un usuario con ese DNI.")
+        else:
+            print("\nNo se encontró un usuario con ese DNI.")
+
+            
+
+    
 
 
 # FUNCIÓN PARA CONSULTAR EL SALDO
 def consultarSaldo(usuario):
     print("\nConsultando Saldo...")
-    print(f"Tu saldo actual es: ${usuario["Saldo"]}")
+    print(f"Tu saldo actual es: ${usuario['Saldo']}")
 
 # FUNCIÓN PARA CONSULTAR FACTURAS
 def consultarFacturas(usuario):
     print("\nConsultando Facturas...")
-
+    cont = 1
+    for factura in usuario['FacturasAdeudadas']:
+        print(f'{cont}. {factura['Servicio']} con vencimiento el: {factura['Vencimiento']} y monto: ${factura['Valor']}')
+        cont += 1
+        
 # FUNCIÓN PARA PAGAR FACTURAS
 def pagarFacturas(usuario):
     print("\nPagando Facturas...")
 # LAS FACTURAS SOLO SE PAGAN SI TIENES SALDO SUFICIENTE
 # SI LAS FACTURAS SE PAGAN, SE BORRAN DEL DICCIONARIO
+    consultarFacturas(usuario)
+    factAPagar = int(input("Decime que factura queres abonar: (SOLO NUMERO) "))
+    if usuario['FacturasAdeudadas'][factAPagar-1]['Valor'] > usuario['Saldo']:
+        print("No tienes saldo suficiente para pagar esa factura.")
+    else:
+        usuario['Saldo'] -= usuario['FacturasAdeudadas'][factAPagar-1]['Valor']
+        print(f"Has pagado la factura de {usuario['FacturasAdeudadas'][factAPagar-1]['Servicio']} por un monto de ${usuario['FacturasAdeudadas'][factAPagar-1]['Valor']}.")
+        usuario['FacturasAdeudadas'].pop(factAPagar-1)
+        print(f"Tu nuevo saldo es: ${usuario['Saldo']}")
+        print("Tus facturas adeudadas son ahora: ")
+        consultarFacturas(usuario)
 
 # FUNCIÓN PARA CONSULTAR SUCURSALES
 def consultarSucursales():
     print("\nAccediendo a datos de sucursales...")
+    #Printeo sucursales de Caba
+    sucursal = sucursales['Caba']
+    print("Las sucursales en CABA son: ")
+    for local in sucursal:
+        print(f'La sucursal de {local}')
+    #Printeo sucursales de Oeste
+    sucursal = sucursales['Oeste']
+    print("Las sucursales en OESTE son: ")
+    for local in sucursal:
+        print(f'La sucursal de {local}')
+    #Printeo sucursales de Sur
+    sucursal = sucursales['Sur']
+    print("Las sucursales en SUR son: ")
+    for local in sucursal:
+        print(f'La sucursal de {local}')
+    #Printeo sucursales en Norte
+    sucursal = sucursales['Norte']
+    print("Las sucursales en Norte son: ")
+    for local in sucursal:
+        print(f'La sucursal de {local}')
 
 # FUNCIÓN PARA SACAR TURNO
 def sacarTurno():
@@ -173,34 +219,46 @@ def sacarTurno():
 print("\n**¡Hola! Soy Telmo, tu asistente virtual**")
 
 # SOLICITAR DNI CON input() Y ALMACENARLO EN UNA VARIABLE
-dniIngresado = int(input("\nPor favor, ingrese su DNI (sin puntos): "))
-
+dniIngresado = int(input("Por favor, ingrese su DNI (sin puntos): "))
 # BUSCAR USUARIO SEGÚN SU DNI Y ALMACENARLO EN UNA VARIABLE LLAMADA "usuarioActual"
 usuarioActual = buscarUsuarioPorDni(dniIngresado)
 # SALUDAR AL "usuarioActual" SEGÚN SU NOMBRE
-
-
+if usuarioActual != None:
+    continuar = "SI"
+else:
+    continuar = "NO"
 # BUCLE DEL CHATBOT - PERMITIR ELEGIR OPCIONES HASTA QUE DESEE TERMINAR
 
-continuar = "SI"
 while continuar == "SI":
     opcion = input("""
-        Ingrese el número de opción que desea:
+    Ingrese el número de opción que desea:
 
-        1. Consultar saldo
-        2. Consultar facturas de servicios vencidas
-        3. Pagar facturas
-        4. Consultar sucursales
-        5. Solicitar un turno
-        >>>>>>>>>>>>: """)
+    1. Consultar saldo
+    2. Consultar facturas de servicios vencidas
+    3. Pagar facturas
+    4. Consultar sucursales
+    5. Solicitar un turno
+    >>>>>>>>>>>>: """)
+    match opcion:
+        case '1':
+            consultarSaldo(usuarioActual)
+        case '2':
+            consultarFacturas(usuarioActual)
+        case '3':
+            pagarFacturas(usuarioActual)
+        case '4':
+            consultarSucursales()
+        case '5':
+            sacarTurno()
+        case _:
+            print("\nOpción no válida. Por favor, ingrese un número del 1 al 5.")
+    continuar = input("\n¿Desea realizar otra consulta? (SI/NO): ").upper()
+    if continuar == 'NO':
+        break
+    else:
+        continue
 
-# VERIFICAR QUE LA OPCIÓN INGRESADA SEA CORRECTA
-
-# USAR UN CONDICIONAL PARA EJECUTAR LA FUNCIÓN QUE CORRESPONDA SEGÚN LA ELECCIÓN
-
-# PREGUNTAR SI DESEA CONTINUAR
 continuar = "NO"
-
 
 # CUANDO TERMINA EL BUCLE, SE MUESTRA UN MENSAJE DE DESPEDIDA
 print("\n**¡Gracias por utilizar el servicio de autogestión!**")
